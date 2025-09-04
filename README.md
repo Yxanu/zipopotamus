@@ -8,17 +8,17 @@ Zipopotamus is a universal deployment packaging tool for web projects. Like a hi
 
 ### One-line Install (Global)
 ```bash
-curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/zipopotamus/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/yxanu/zipopotamus/main/install.sh | bash
 ```
 
 ### Project-only Install
 ```bash
-curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/zipopotamus/main/install.sh | bash -s -- --project
+curl -sSL https://raw.githubusercontent.com/yxanu/zipopotamus/main/install.sh | bash -s -- --project
 ```
 
 ### Manual Install
 ```bash
-git clone https://github.com/YOUR_USERNAME/zipopotamus.git
+git clone https://github.com/yxanu/zipopotamus.git
 cd zipopotamus
 chmod +x zipopotamus install.sh
 ./install.sh
@@ -261,4 +261,3 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-*Made with 🦛 and ❤️ for developers who want hassle-free deployments*

@@ -13,7 +13,7 @@ show_help() {
 🦛 Zipopotamus Installer v1.0.0
 
 USAGE:
-  curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/zipopotamus/main/install.sh | bash
+  curl -sSL https://raw.githubusercontent.com/yxanu/zipopotamus/main/install.sh | bash
   
   # Or download and run locally:
   bash install.sh [OPTIONS]
@@ -50,7 +50,7 @@ install_zipopotamus() {
     cp zipopotamus "$install_path"
   else
     echo "🦛 Downloading zipopotamus from GitHub..."
-    curl -sSL "https://raw.githubusercontent.com/YOUR_USERNAME/zipopotamus/main/zipopotamus" -o "$install_path"
+    curl -sSL "https://raw.githubusercontent.com/yxanu/zipopotamus/main/zipopotamus" -o "$install_path"
   fi
   
   chmod +x "$install_path"
