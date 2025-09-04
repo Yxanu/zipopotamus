@@ -1,0 +1,23 @@
+# 🦛 Zipopotamus Configuration Example for Craft CMS + Vite
+
+# Project name (defaults to directory name)
+PROJECT_NAME="my-craft-project"
+
+# Output directory for deployment package
+OUTPUT_DIR="./dist"
+
+# Command to build frontend assets
+BUILD_COMMAND="npm run build"
+
+# Include vendor directory in the zip file? (true or false)
+# Set to true if you can't run "composer install" on your server
+INCLUDE_VENDOR="true"
+
+# Directory containing frontend source files to exclude
+FRONTEND_SRC_DIR="resources"
+
+# Custom exclude patterns (overrides defaults if set)
+# CUSTOM_EXCLUDES=(
+#   "*.log"
+#   "*.map"
+# )
