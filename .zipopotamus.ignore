@@ -1,0 +1,42 @@
+# Default zipopotamus ignore patterns
+
+# Version control
+.git/
+.gitignore
+
+# Dependencies  
+node_modules/
+vendor/
+
+# Build artifacts
+*.map
+*.log
+*.zip
+*.tar.gz
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Temporary files and random strings (common in temp directories)
+zi*
+tmp*
+temp*
+*tmp
+*.tmp
+*.temp
+
+# Common cache/runtime directories
+cache/
+runtime/
+storage/logs/
+storage/runtime/
+
+# Development files
+tests/
+coverage/

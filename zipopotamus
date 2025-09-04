@@ -127,7 +127,7 @@ if [[ -f "$DEPLOYIGNORE_FILE" ]]; then
   echo "   Using ignore file: $DEPLOYIGNORE_FILE"
   while IFS= read -r line; do
     [[ -z "$line" || "$line" =~ ^# ]] && continue
-    EXCLUDES+=( -x "$line" )
+    EXCLUDES+=( "$line" )
   done < "$DEPLOYIGNORE_FILE"
 fi
 
