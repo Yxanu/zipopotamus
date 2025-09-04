@@ -176,6 +176,7 @@ echo "🦛 📦 This may take a moment for large projects..."
 # Create zip with a cool spinner
 spinner &
 SPINNER_PID=$!
+disown
 # Kill spinner on exit
 trap 'kill $SPINNER_PID &> /dev/null' EXIT
 
