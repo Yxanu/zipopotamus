@@ -54,12 +54,15 @@ EOF
 }
 
 spinner() {
-    local i=0
-    local frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
+    local width=30
+    local hippo="📦🦛"
+    local i
+
     while :; do
-        printf "%s" "${frames[i]}"
-        i=$(( (i+1) % 10 ))
-        sleep 0.1
+        for ((i=width; i>=0; i--)); do
+            printf "\r[%*s%s%*s]" $i "" "$hippo" $((width-i)) ""
+            sleep 0.1
+        done
     done
 }
 
