@@ -10,6 +10,7 @@ Zipopotamus is a universal deployment packaging tool for web projects. Like a hi
 ```bash
 curl -sSL https://raw.githubusercontent.com/yxanu/zipopotamus/main/install.sh | bash
 ```
+*Note: Requires sudo privileges. Will prompt to use `--project` if not available.*
 
 ### Project-only Install
 ```bash
@@ -89,12 +90,14 @@ vendor/
 *.map
 *.log
 *.zip
+*.tar.gz
 
 # Runtime/cache directories
 storage/runtime/*
 storage/logs/*
 cache/
 tmp/
+temp/
 
 # System files
 .DS_Store
@@ -108,6 +111,12 @@ Thumbs.db
 # Database files
 *.sql
 *.sqlite
+
+# Temporary files (common patterns)
+zi*
+tmp*
+*.tmp
+*.temp
 ```
 
 ## 🛠️ Command Line Options
@@ -149,6 +158,15 @@ zipopotamus
 echo 'wp-config.php' > .zipopotamus.ignore
 echo 'wp-content/uploads/*' >> .zipopotamus.ignore
 zipopotamus -n "wordpress-site"
+```
+
+### Handling Large Projects
+If you have a large project with temporary files:
+```bash
+# Create comprehensive ignore file
+cp .zipopotamus.ignore.example .zipopotamus.ignore
+# Edit to add project-specific patterns like zi*, tmp*, etc.
+zipopotamus -n "optimized-package"
 ```
 
 ## 🏗️ Framework-Specific Examples
@@ -238,6 +256,8 @@ Installs to `./scripts/zipopotamus` - project-specific
 - **⚡ Fast & Reliable**: Quick packaging with sensible defaults
 - **🛡️ Safe**: Validates configuration and dependencies
 - **🎨 Customizable**: Flexible configuration for any workflow
+- **🧹 Clean**: Automatically excludes temporary files, logs, and build artifacts
+- **📦 Optimized**: Creates minimal deployment packages by excluding unnecessary files
 - **😊 Fun**: Because deployment doesn't have to be boring!
 
 ## 🤝 Contributing
