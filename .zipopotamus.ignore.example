@@ -1,0 +1,102 @@
+# 🦛 Zipopotamus Ignore File Example
+# Copy this file to .zipopotamus.ignore and customize for your project
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules/
+vendor/
+bower_components/
+
+# Build artifacts and compiled files
+*.map
+*.log
+*.zip
+*.tar.gz
+dist/
+build/
+public/build/
+
+# Runtime/cache directories
+storage/runtime/*
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+web/cpresources/*
+cache/
+tmp/
+temp/
+.cache/
+
+# System files
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*~
+
+# Environment and config files
+.env
+.env.*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database files
+*.sql
+*.sqlite
+*.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Development/testing files
+tests/
+spec/
+coverage/
+.nyc_output/
+.phpunit.result.cache
+
+# Documentation (if you don't want to deploy it)
+docs/
+documentation/
+
+# Backup files
+*.backup
+*.bak
+backups/
+
+# Framework-specific patterns
+# Uncomment as needed for your project:
+
+# Laravel
+# bootstrap/cache/*
+# storage/app/*
+# storage/framework/*
+# !storage/app/.gitignore
+# !storage/framework/.gitignore
+
+# Craft CMS
+# config/license.key
+# storage/backups/
+
+# WordPress
+# wp-config.php
+# wp-content/uploads/*
+
+# Node.js/React
+# .next/*
+# out/
+
+# Symfony
+# var/cache/*
+# var/logs/*

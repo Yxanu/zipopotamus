@@ -1,0 +1,157 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 🦛 Zipopotamus - The Deployment Hippo That Never Forgets Your Files! 🦛
+# Universal deployment packaging tool for web projects
+
+VERSION="1.0.0"
+
+# Configuration - can be overridden by environment variables or config file
+PROJECT_NAME="${PROJECT_NAME:-$(basename "$(pwd)")}"
+OUTPUT_DIR="${OUTPUT_DIR:-$(pwd)}"
+CONFIG_FILE="${CONFIG_FILE:-.zipopotamus.config}"
+
+# Load config file if it exists
+if [[ -f "$CONFIG_FILE" ]]; then
+  source "$CONFIG_FILE"
+fi
+
+# Show help
+show_help() {
+  cat << 'EOF'
+🦛 Zipopotamus v1.0.0 - The Deployment Hippo That Never Forgets Your Files!
+
+USAGE:
+  zipopotamus [OPTIONS]
+
+OPTIONS:
+  -h, --help        Show this help message
+  -v, --version     Show version
+  -c, --config FILE Use custom config file (default: .zipopotamus.config)
+  -o, --output DIR  Output directory for deployment package
+  -n, --name NAME   Project name for the package
+
+CONFIGURATION:
+  Create a .zipopotamus.config file in your project root:
+  
+  PROJECT_NAME="my-awesome-project"
+  OUTPUT_DIR="/path/to/deployments"
+  DEPENDENCY_DIRS="vendor node_modules"
+  UPLOAD_MESSAGE="🦛 Zipopotamus says: Deploy away!"
+
+EXAMPLES:
+  zipopotamus                           # Use defaults
+  zipopotamus -n "my-app" -o "./dist"   # Custom name and output
+  PROJECT_NAME="test" zipopotamus       # Environment variable
+
+The hippo remembers everything so you don't have to! 🦛
+EOF
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -h|--help)
+      show_help
+      exit 0
+      ;;
+    -v|--version)
+      echo "Zipopotamus v$VERSION"
+      exit 0
+      ;;
+    -c|--config)
+      CONFIG_FILE="$2"
+      shift 2
+      ;;
+    -o|--output)
+      OUTPUT_DIR="$2"
+      shift 2
+      ;;
+    -n|--name)
+      PROJECT_NAME="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown option: $1"
+      show_help
+      exit 1
+      ;;
+  esac
+done
+
+# Reload config if specified via command line
+if [[ -f "$CONFIG_FILE" ]]; then
+  source "$CONFIG_FILE"
+fi
+
+NAME="${PROJECT_NAME}-deploy-$(date +%Y%m%d-%H%M%S).zip"
+
+# Validation
+if [[ ! -d "$OUTPUT_DIR" ]]; then
+  echo "🦛 Zipopotamus Error: Output directory '$OUTPUT_DIR' does not exist"
+  exit 1
+fi
+
+if [[ -z "$PROJECT_NAME" ]]; then
+  echo "🦛 Zipopotamus Error: PROJECT_NAME cannot be empty"
+  exit 1
+fi
+
+echo "🦛 Zipopotamus is packaging your project..."
+echo "   Project: $PROJECT_NAME"
+echo "   Output: $OUTPUT_DIR"
+echo "   Package: $NAME"
+
+if command -v gsed >/dev/null 2>&1; then SED=gsed; else SED=sed; fi
+
+# Default exclude patterns (can be overridden in config)
+DEFAULT_EXCLUDES=(
+  "*/.git/*"
+  "node_modules/*"
+  "storage/runtime/*"
+  "storage/logs/*"
+  "web/cpresources/*"
+  "*.map"
+  "*.log"
+  "*.zip"
+  ".DS_Store"
+  ".env"
+)
+
+# Use custom excludes if defined, otherwise use defaults
+EXCLUDES=("${CUSTOM_EXCLUDES[@]:-${DEFAULT_EXCLUDES[@]}}")
+
+# Build an exclude list from .zipopotamus.ignore for zip (if file exists)
+DEPLOYIGNORE_FILE="${DEPLOYIGNORE_FILE:-.zipopotamus.ignore}"
+if [[ -f "$DEPLOYIGNORE_FILE" ]]; then
+  echo "   Using ignore file: $DEPLOYIGNORE_FILE"
+  while IFS= read -r line; do
+    [[ -z "$line" || "$line" =~ ^# ]] && continue
+    EXCLUDES+=( -x "$line" )
+  done < "$DEPLOYIGNORE_FILE"
+fi
+
+# Convert excludes array to zip arguments
+ZIP_EXCLUDES=()
+for exclude in "${EXCLUDES[@]}"; do
+  ZIP_EXCLUDES+=( -x "$exclude" )
+done
+
+# Dependency check (configurable)
+DEPENDENCY_DIRS="${DEPENDENCY_DIRS:-vendor}"
+if [[ -n "$DEPENDENCY_DIRS" ]]; then
+  for dep_dir in $DEPENDENCY_DIRS; do
+    if [[ ! -d "$dep_dir" ]]; then
+      echo "🦛 Warning: $dep_dir/ not found. If your server can't install dependencies, install locally first!"
+    fi
+  done
+fi
+
+# Create the deployment package
+zip -r "$OUTPUT_DIR/$NAME" . "${ZIP_EXCLUDES[@]}" > /dev/null 2>&1
+
+echo "🦛 Done: $OUTPUT_DIR/$NAME"
+UPLOAD_MESSAGE="${UPLOAD_MESSAGE:-🦛 Zipopotamus says: Your deployment package is ready! Upload to your hosting provider.}"
+echo "$UPLOAD_MESSAGE"
+echo ""
+echo "🦛 The hippo never forgets - your files are safely packaged!"

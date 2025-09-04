@@ -1,0 +1,17 @@
+# Zipopotamus development files
+*.zip
+test-deployments/
+
+# macOS
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*~

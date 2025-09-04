@@ -1,0 +1,33 @@
+# 🦛 Zipopotamus Configuration Example
+# Copy this file to .zipopotamus.config and customize for your project
+
+# Project name (defaults to directory name)
+PROJECT_NAME="my-awesome-project"
+
+# Output directory for deployment package (defaults to current directory)
+OUTPUT_DIR="/path/to/deployments"
+
+# Custom deployignore file (defaults to .zipopotamus.ignore)
+DEPLOYIGNORE_FILE=".zipopotamus.ignore"
+
+# Custom exclude patterns (overrides defaults if set)
+# Uncomment and customize as needed:
+# CUSTOM_EXCLUDES=(
+#   "*.log"
+#   "*.map"
+#   "node_modules/*"
+#   "vendor/*"
+#   "storage/logs/*"
+#   "storage/runtime/*"
+#   "web/cpresources/*"
+#   ".DS_Store"
+#   ".env"
+#   "tests/*"
+#   "coverage/*"
+# )
+
+# Dependency directories to check (space-separated, defaults to "vendor")
+DEPENDENCY_DIRS="vendor node_modules"
+
+# Custom upload message
+UPLOAD_MESSAGE="🦛 Zipopotamus says: Your deployment package is ready! Upload to your hosting provider."

@@ -1,0 +1,46 @@
+{
+  "name": "zipopotamus",
+  "version": "1.0.0",
+  "description": "🦛 The Deployment Hippo That Never Forgets Your Files! Universal deployment packaging tool for web projects.",
+  "main": "zipopotamus",
+  "bin": {
+    "zipopotamus": "./zipopotamus"
+  },
+  "scripts": {
+    "install": "./install.sh --project",
+    "test": "echo 'No tests yet - the hippo is still learning!' && exit 0",
+    "postinstall": "echo '🦛 Zipopotamus is ready! Run zipopotamus --help to get started.'"
+  },
+  "keywords": [
+    "deployment",
+    "packaging",
+    "zip",
+    "web-development",
+    "devops",
+    "deployment-tool",
+    "hippo",
+    "craft-cms",
+    "laravel",
+    "wordpress",
+    "react",
+    "nodejs"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/zipopotamus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/zipopotamus/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/zipopotamus#readme",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ]
+}
