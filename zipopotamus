@@ -149,31 +149,10 @@ fi
 
 # Create the deployment package
 echo "🦛 Creating zip package..."
-echo -n "🦛 "
+echo "🦛 📦 This may take a moment for large projects..."
 
-# Show progress indicator while zip runs
-zip -r "$OUTPUT_DIR/$NAME" . "${ZIP_EXCLUDES[@]}" &
-ZIP_PID=$!
-
-# Stylish progress indicator
-SPINNER="⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
-while kill -0 $ZIP_PID 2>/dev/null; do
-  for i in $(seq 0 9); do
-    if kill -0 $ZIP_PID 2>/dev/null; then
-      printf "\r🦛 ${SPINNER:$i:1} Packaging files..."
-      sleep 0.1
-    else
-      break
-    fi
-  done
-done
-
-wait $ZIP_PID
-ZIP_EXIT_CODE=$?
-
-printf "\r🦛 ✨ Packaging complete!     \n"
-
-if [[ $ZIP_EXIT_CODE -eq 0 ]]; then
+# Create zip with visible progress (no fancy spinner)
+if zip -r "$OUTPUT_DIR/$NAME" . "${ZIP_EXCLUDES[@]}"; then
   echo ""
   echo "🦛 Done: $OUTPUT_DIR/$NAME"
   
