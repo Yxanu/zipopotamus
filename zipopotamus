@@ -133,6 +133,7 @@ fi
 
 # Convert excludes array to zip arguments
 ZIP_EXCLUDES=()
+EXCLUDES+=("*.zip")
 for exclude in "${EXCLUDES[@]}"; do
   ZIP_EXCLUDES+=( -x "$exclude" )
 done
