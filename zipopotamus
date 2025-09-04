@@ -148,10 +148,48 @@ if [[ -n "$DEPENDENCY_DIRS" ]]; then
 fi
 
 # Create the deployment package
-zip -r "$OUTPUT_DIR/$NAME" . "${ZIP_EXCLUDES[@]}" > /dev/null 2>&1
+echo "🦛 Creating zip package..."
+echo -n "🦛 "
 
-echo "🦛 Done: $OUTPUT_DIR/$NAME"
-UPLOAD_MESSAGE="${UPLOAD_MESSAGE:-🦛 Zipopotamus says: Your deployment package is ready! Upload to your hosting provider.}"
-echo "$UPLOAD_MESSAGE"
-echo ""
-echo "🦛 The hippo never forgets - your files are safely packaged!"
+# Show progress indicator while zip runs
+zip -r "$OUTPUT_DIR/$NAME" . "${ZIP_EXCLUDES[@]}" &
+ZIP_PID=$!
+
+# Stylish progress indicator
+SPINNER="⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+while kill -0 $ZIP_PID 2>/dev/null; do
+  for i in $(seq 0 9); do
+    if kill -0 $ZIP_PID 2>/dev/null; then
+      printf "\r🦛 ${SPINNER:$i:1} Packaging files..."
+      sleep 0.1
+    else
+      break
+    fi
+  done
+done
+
+wait $ZIP_PID
+ZIP_EXIT_CODE=$?
+
+printf "\r🦛 ✨ Packaging complete!     \n"
+
+if [[ $ZIP_EXIT_CODE -eq 0 ]]; then
+  echo ""
+  echo "🦛 Done: $OUTPUT_DIR/$NAME"
+  
+  # Show file size
+  if [[ -f "$OUTPUT_DIR/$NAME" ]]; then
+    SIZE=$(du -h "$OUTPUT_DIR/$NAME" | cut -f1)
+    echo "🦛 Package size: $SIZE"
+  fi
+  
+  UPLOAD_MESSAGE="${UPLOAD_MESSAGE:-🦛 Zipopotamus says: Your deployment package is ready! Upload to your hosting provider.}"
+  echo "$UPLOAD_MESSAGE"
+  echo ""
+  echo "🦛 The hippo never forgets - your files are safely packaged!"
+else
+  echo ""
+  echo "🦛 ERROR: Failed to create deployment package!"
+  echo "🦛 Check your permissions and disk space."
+  exit 1
+fi
