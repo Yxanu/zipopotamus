@@ -48,6 +48,17 @@ The hippo remembers everything so you don't have to! 🦛
 EOF
 }
 
+spinner() {
+    local i=0
+    local frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
+    while :; do
+        printf "\r%s" "${frames[i]}"
+        i=$(( (i+1) % 10 ))
+        sleep 0.1
+    done
+}
+
+
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -152,8 +163,17 @@ fi
 echo "🦛 Creating zip package..."
 echo "🦛 📦 This may take a moment for large projects..."
 
-# Create zip with visible progress (no fancy spinner)
-if zip -r "$OUTPUT_DIR/$NAME" . "${ZIP_EXCLUDES[@]}"; then
+# Create zip with a cool spinner
+spinner &
+SPINNER_PID=$!
+# Kill spinner on exit
+trap 'kill $SPINNER_PID &> /dev/null' EXIT
+
+if zip -qr "$OUTPUT_DIR/$NAME" . "${ZIP_EXCLUDES[@]}"; then
+  # Stop spinner
+  kill $SPINNER_PID &> /dev/null
+  trap - EXIT
+  printf "\r"
   echo ""
   echo "🦛 Done: $OUTPUT_DIR/$NAME"
   
@@ -168,6 +188,10 @@ if zip -r "$OUTPUT_DIR/$NAME" . "${ZIP_EXCLUDES[@]}"; then
   echo ""
   echo "🦛 The hippo never forgets - your files are safely packaged!"
 else
+  # Stop spinner
+  kill $SPINNER_PID &> /dev/null
+  trap - EXIT
+  printf "\r"
   echo ""
   echo "🦛 ERROR: Failed to create deployment package!"
   echo "🦛 Check your permissions and disk space."
